@@ -11,11 +11,11 @@ const user = async (fastify: FastifyInstance, options: RouteShorthandOptions) =>
     '/users',
     {...options, schema: {querystring: Schema.Users}},
     async (res, reply) => {
-      const userRole = (res.user as Schema.JWTType).role[0];
-      if (userRole === 'owner' || userRole === 'admin') {
+      const userRole = (res.user as Schema.JWTType).role;
+      if (userRole === 'admin') {
         const {page, limit} = res.query;
         const users = await usersAccounts
-          .find()
+          .find({}, {projection: {password: 0}})
           .skip(page > 1 ? page - 1 * limit : 0)
           .limit(limit)
           .toArray();
