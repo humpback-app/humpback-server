@@ -12,6 +12,7 @@
     "prebuild": "eslint .",
     "build": "tsc",
     "ts": "node --loader ts-node/esm",
+    "mongo": "npx mongo-gui",
     "dev": "node --loader ts-node/esm src/server.ts",
     "pretest": "eslint .",
     "test": "c8 ava"
