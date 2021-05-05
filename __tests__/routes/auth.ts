@@ -42,3 +42,18 @@ test('POST /login (Should return json web token)', async (t) => {
   process.env.TOKEN = json.token;
   t.truthy(json.token);
 });
+
+test('POST /signup (Create subscriber account)', async (t) => {
+  const payload = {
+    displayname: 'Sayem',
+    username: '74y3m',
+    email: 'user2@example.com',
+    password: 'securepassword',
+  };
+  const {statusCode, body} = await app.inject({method: 'POST', url: '/signup', payload});
+  t.is(statusCode, 201);
+
+  const json = JSON.parse(body);
+  t.true(json.acknowledged);
+  t.truthy(json.insertedId);
+});
