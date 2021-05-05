@@ -4,7 +4,7 @@ import log from './logger.js';
 import {musicPlaylists} from '../database.js';
 import {m3u8Reader, generatePlaylistInfo} from '../util/index.js';
 import {extractAudio} from './extract.js';
-import type {ScrapeFilesType} from '../types';
+import type {DeezerTrackType, TrackType, ScrapeFilesType} from '../types';
 
 const extractMeta = async (file: ScrapeFilesType) => {
   const meta = await metadata(file.path);
@@ -14,19 +14,24 @@ const extractMeta = async (file: ScrapeFilesType) => {
 const extractPlaylist = async (file: ScrapeFilesType) => {
   try {
     const {name, tracks} = m3u8Reader(file.path);
-    const isrcs: string[] = [];
+    const addedTracks: (TrackType | DeezerTrackType)[] = [];
     for (const track of tracks) {
       const info = await extractMeta({
         name: basename(track),
         path: track,
         type: 'audio',
       });
-      const isrc = await extractAudio(info);
-      if (isrc) {
-        isrcs.push(isrc);
+      const addedTrack = await extractAudio(info, {readable: 1, isrc: 1});
+      if (addedTrack) {
+        addedTracks.push(addedTrack);
       }
     }
-    const playlistInfo = await generatePlaylistInfo({name, description: '', path: '', isrcs});
+    const playlistInfo = await generatePlaylistInfo({
+      name,
+      description: '',
+      path: '',
+      isrcs: addedTracks.map((t) => t.isrc),
+    });
     await musicPlaylists.updateOne({id: playlistInfo.id}, {$set: playlistInfo}, {upsert: true});
   } catch (err) {
     log.error('[extractPlaylist] ' + err.message);

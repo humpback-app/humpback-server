@@ -30,7 +30,6 @@ const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string, barco
       track = await findTrackFromAlbum(track.title, album.tracks.data);
     }
 
-    let isSaved = false;
     await Promise.all(
       trackIds.map(async (id) => {
         if (id === track.id || !availableTracks.includes({id})) {
@@ -43,7 +42,6 @@ const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string, barco
               trackInfo = generateTrackInfo(track, trackPath, md5hash, true);
               await musicTracks.updateOne({isrc: trackInfo.isrc}, {$set: trackInfo}, {upsert: true});
               await musicArtists.updateOne({id: trackInfo.artist.id}, {$set: trackInfo.artist}, {upsert: true});
-              isSaved = true;
               return;
             }
 
@@ -61,17 +59,20 @@ const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string, barco
       }),
     );
 
-    return isSaved ? track.isrc : undefined;
+    return track;
   } catch (err) {
     log.error(`[addTrackAndAlbum] ${err.message}`, trackPath);
   }
 };
 
-export const extractAudio = async (file: ScrapeFilesType) => {
+export const extractAudio = async (
+  file: ScrapeFilesType,
+  projection: Record<string, 0 | 1> = {_id: 0, readable: 1},
+) => {
   try {
-    const entry = await musicTracks.findOne({track_path: file.path}, {projection: {_id: 0, readable: 1, isrc: 1}});
+    const entry = await musicTracks.findOne({track_path: file.path}, {projection});
     if (entry && entry.readable) {
-      return (entry as TrackType).isrc;
+      return entry as TrackType;
     }
 
     let track: DeezerTrackType | null = null;
