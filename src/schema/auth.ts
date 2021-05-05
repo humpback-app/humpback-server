@@ -63,5 +63,6 @@ export interface SignupType extends LoginType {
   displayname: string;
   username: string;
   password: string;
+  sex: string;
   role: UserRoleType;
 }

@@ -53,8 +53,7 @@ const auth = async (fastify: FastifyInstance) => {
     }
 
     res.body.password = await bcrypt.hash(res.body.password, saltRounds);
-    const created = await usersAccounts.insertOne(res.body);
-    await setUserInfo(res.body);
+    const created = await setUserInfo(res.body);
     reply.code(201).send(created);
   });
 };

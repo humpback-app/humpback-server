@@ -3,10 +3,9 @@ import dayjs from 'dayjs';
 import {usersAccounts} from '../database.js';
 import * as Schema from '../schema/index.js';
 
-export const setUserInfo = async (user: Schema.SignupType): Promise<Schema.UserType> => {
+export const setUserInfo = async (user: Schema.SignupType) => {
   const info: Schema.UserType = {
-    displayname: user.displayname,
-    username: user.username,
+    ...user,
     avatar: 'https://www.gravatar.com/avatar/' + createHash('md5').update(user.email).digest('hex'),
     social: {},
     created_at: dayjs().toISOString(),
@@ -14,6 +13,5 @@ export const setUserInfo = async (user: Schema.SignupType): Promise<Schema.UserT
     status: 'active',
   };
 
-  await usersAccounts.insertOne(info);
-  return info;
+  return await usersAccounts.insertOne(info);
 };

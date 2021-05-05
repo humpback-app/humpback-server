@@ -26,6 +26,8 @@ export interface UserTypeMinimal {
   _id?: ObjectId;
   displayname: string;
   username: string;
+  email: string;
+  sex: string;
   avatar: string;
   bio?: string;
   website?: string;
