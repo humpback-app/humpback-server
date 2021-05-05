@@ -4,17 +4,16 @@ import {usersAccounts} from '../database.js';
 import * as Schema from '../schema/index.js';
 
 export const setUserInfo = async (user: Schema.SignupType): Promise<Schema.UserType> => {
-  const info = {
+  const info: Schema.UserType = {
     displayname: user.displayname,
     username: user.username,
     avatar: 'https://www.gravatar.com/avatar/' + createHash('md5').update(user.email).digest('hex'),
     social: {},
-    meta: {},
     created_at: dayjs().toISOString(),
     role: user.role,
+    status: 'active',
   };
 
-  const {insertedId} = await usersAccounts.insertOne(info);
-
-  return {_id: insertedId, status: 'active', ...info};
+  await usersAccounts.insertOne(info);
+  return info;
 };

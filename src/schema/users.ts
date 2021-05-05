@@ -23,7 +23,7 @@ export const Users: JSONSchema7 = {
 export type UserRoleType = 'admin' | 'subscriber';
 
 export interface UserTypeMinimal {
-  _id: ObjectId;
+  _id?: ObjectId;
   displayname: string;
   username: string;
   avatar: string;
@@ -41,8 +41,8 @@ export interface UserTypeMinimal {
     linkedin?: string;
     youtube?: string;
   };
-  last_seen?: Date | null;
-  role?: UserRoleType;
+  last_seen?: string | null;
+  role: UserRoleType;
 }
 
 export interface UserType extends UserTypeMinimal {

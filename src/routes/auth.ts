@@ -5,6 +5,14 @@ import * as Schema from '../schema/index.js';
 import type {FastifyInstance} from 'fastify';
 
 /**
+ * A cryptographic salt is made up of random bits added
+ * to each password instance before its hashing.
+ * Salts create unique passwords even in the instance of
+ * two users choosing the same passwords.
+ */
+const saltRounds = 10;
+
+/**
  * Create user index for faster query performance
  * Strength 2 means case insensitive search
  */
@@ -44,7 +52,7 @@ const auth = async (fastify: FastifyInstance) => {
       res.body.role = 'subscriber';
     }
 
-    res.body.password = await bcrypt.hash(res.body.password, 10);
+    res.body.password = await bcrypt.hash(res.body.password, saltRounds);
     const created = await usersAccounts.insertOne(res.body);
     await setUserInfo(res.body);
     reply.code(201).send(created);
