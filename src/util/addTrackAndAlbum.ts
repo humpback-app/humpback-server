@@ -21,7 +21,7 @@ export const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string
       }
     }
 
-    const isAlbumExists = await musicAlbums.findOne({id: album.id});
+    const isAlbumExists = await musicAlbums.findOne({id: album.id}, {projection: {_id: 1}});
     if (!isAlbumExists) {
       await musicAlbums.insertOne(generateAlbumInfo(album));
     }

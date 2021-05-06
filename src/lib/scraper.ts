@@ -13,7 +13,7 @@ const extractMeta = async (file: ScrapeFilesType) => {
 
 const extractPlaylist = async (file: ScrapeFilesType) => {
   try {
-    const isPlaylistExists = await musicPlaylists.findOne({playlist_path: file.path});
+    const isPlaylistExists = await musicPlaylists.findOne({playlist_path: file.path}, {projection: {_id: 1}});
     if (isPlaylistExists) {
       return;
     }
