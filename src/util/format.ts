@@ -106,7 +106,7 @@ interface PlaylistInfoType {
   name: string;
   description: string;
   path: string;
-  isrcs: string[];
+  tracks: string[];
   username?: string;
 }
 
@@ -120,7 +120,7 @@ export const generatePlaylistInfo = async ({
   name,
   description,
   path,
-  isrcs,
+  tracks,
   username,
 }: PlaylistInfoType): Promise<PlaylistType> => {
   let creator = {
@@ -145,14 +145,15 @@ export const generatePlaylistInfo = async ({
     description,
     duration: 0,
     public: true,
-    collaborative: true,
-    nb_tracks: isrcs.length,
-    checksum: checksum(isrcs),
+    collaborative: false,
+    nb_tracks: tracks.length,
+    checksum: checksum(tracks),
     md5_image: '',
     picture_type: 'cover',
     creator,
     type: 'playlist',
     created_at: dayjs().toISOString(),
-    tracks: isrcs,
+    playlist_path: path,
+    tracks,
   };
 };

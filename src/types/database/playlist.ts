@@ -16,5 +16,6 @@ export interface PlaylistType {
   };
   tracks: string[];
   created_at: string;
+  playlist_path: string;
   type: 'playlist';
 }

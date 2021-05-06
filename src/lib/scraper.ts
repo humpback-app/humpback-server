@@ -21,7 +21,7 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
         path: track,
         type: 'audio',
       });
-      const addedTrack = await extractAudio(info, {readable: 1, isrc: 1});
+      const addedTrack = await extractAudio(info, {id: 1, readable: 1});
       if (addedTrack) {
         addedTracks.push(addedTrack);
       }
@@ -29,8 +29,8 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
     const playlistInfo = await generatePlaylistInfo({
       name,
       description: '',
-      path: '',
-      isrcs: addedTracks.map((t) => t.isrc),
+      path: file.path,
+      tracks: addedTracks.map((t) => `${t.id}`),
     });
     await musicPlaylists.updateOne({id: playlistInfo.id}, {$set: playlistInfo}, {upsert: true});
   } catch (err) {
