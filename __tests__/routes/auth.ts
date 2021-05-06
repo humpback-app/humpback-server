@@ -57,3 +57,14 @@ test('POST /signup (Create subscriber account)', async (t) => {
   t.true(json.acknowledged);
   t.truthy(json.insertedId);
 });
+
+test('POST /signup (Should prevent ghost registration)', async (t) => {
+  const payload = {
+    displayname: 'Ghost',
+    username: 'ghost',
+    email: 'ghost@example.com',
+    password: 'ghostpassword',
+  };
+  const {statusCode} = await app.inject({method: 'POST', url: '/signup', payload});
+  t.is(statusCode, 409);
+});

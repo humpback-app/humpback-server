@@ -39,7 +39,7 @@ const auth = async (fastify: FastifyInstance) => {
       {$or: [{email: res.body.email}, {username: res.body.username}]},
       {collation},
     );
-    if (user) {
+    if (user || res.body.username.toLowerCase().trim() === 'ghost') {
       reply.code(409).send('User already exists with that username or email.');
       return;
     }
