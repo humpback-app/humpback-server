@@ -13,6 +13,11 @@ const extractMeta = async (file: ScrapeFilesType) => {
 
 const extractPlaylist = async (file: ScrapeFilesType) => {
   try {
+    const isPlaylistExists = await musicPlaylists.findOne({playlist_path: file.path});
+    if (isPlaylistExists) {
+      return;
+    }
+
     const {name, tracks} = m3u8Reader(file.path);
     const addedTracks: (TrackType | DeezerTrackType)[] = [];
     for (const track of tracks) {
@@ -32,7 +37,7 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
       path: file.path,
       tracks: addedTracks.map((t) => `${t.id}`),
     });
-    await musicPlaylists.updateOne({id: playlistInfo.id}, {$set: playlistInfo}, {upsert: true});
+    await musicPlaylists.insertOne(playlistInfo);
   } catch (err) {
     log.error('[extractPlaylist] ' + err.message);
   }
