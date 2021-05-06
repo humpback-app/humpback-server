@@ -20,7 +20,15 @@ export const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string
         throw err;
       }
     }
-    await musicAlbums.updateOne({id: album.id}, {$set: generateAlbumInfo(album)}, {upsert: true});
+
+    const isAlbumExists = await musicAlbums.findOne({id: album.id});
+    if (!isAlbumExists) {
+      await musicAlbums.insertOne(generateAlbumInfo(album));
+    }
+
+    // Only update album tracks
+    const {tracks} = generateAlbumInfo(album);
+    await musicAlbums.updateOne({id: album.id}, {$set: {tracks}});
 
     const trackIds = album.tracks.data.map((t) => t.id.toString());
     const availableTracks = await musicTracks.find({id: {$in: trackIds}}, {projection: {_id: 0, id: 1}}).toArray();
