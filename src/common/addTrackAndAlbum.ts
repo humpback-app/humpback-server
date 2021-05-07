@@ -1,7 +1,8 @@
 import {getDeezerAlbum, getDeezerTrack, isrc2track, upc2album} from '../lib/deezer.js';
 import log from '../lib/logger.js';
 import {musicTracks, musicAlbums, musicArtists} from '../database.js';
-import {md5File, generateAlbumInfo, generateTrackInfo, findTrackFromAlbum} from './index.js';
+import {md5File, generateAlbumInfo, generateTrackInfo} from '../util/index.js';
+import {findTrackFromAlbum} from './findTrackFromAlbum';
 import type {DeezerAlbumType, DeezerTrackType, TrackType} from '../types';
 
 export const addTrackAndAlbum = async (track: DeezerTrackType, trackPath: string, barcode?: string) => {

@@ -2,7 +2,8 @@ import {isrc2track, upc2album} from './deezer.js';
 import {findTrackByFingerprint} from './chromaprint.js';
 import log from './logger.js';
 import {musicTracks} from '../database.js';
-import {findTrackFromAlbum, addTrackAndAlbum} from '../util/index.js';
+import {addTrackAndAlbum} from '../common/addTrackAndAlbum';
+import {findTrackFromAlbum} from '../common/findTrackFromAlbum';
 import type {ScrapeFilesType, DeezerAlbumType, DeezerTrackType, TrackType} from '../types';
 
 export const extractAudio = async (

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import {usersAccounts} from '../database.js';
-import {setUserInfo} from '../common/user.js';
+import {setUserInfo} from '../common/setUserInfo.js';
 import * as Schema from '../schema/index.js';
 import type {FastifyInstance} from 'fastify';
 
