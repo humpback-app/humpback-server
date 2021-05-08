@@ -1,4 +1,4 @@
-import type {GenreType, ContributorsType, ArtistType} from './common.js';
+import type {GenreType, ContributorsType, ArtistTypeMinimal} from './common.js';
 
 export interface AlbumType {
   id: string; // '302127';
@@ -20,7 +20,7 @@ export interface AlbumType {
   explicit_content_lyrics: number; // 7;
   explicit_content_cover: number; // 0;
   contributors: ContributorsType[];
-  artist: ArtistType;
+  artist: ArtistTypeMinimal;
   tracks: string[];
   created_at: string;
   type: 'album';

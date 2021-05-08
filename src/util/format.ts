@@ -37,7 +37,6 @@ export const generateAlbumInfo = (album: DeezerAlbumType): AlbumType => {
     artist: {
       id: `${album.artist.id}`,
       name: album.artist.name,
-      radio: album.artist.radio,
       md5_image: md5Image(album.artist.picture_xl),
     },
     tracks: album.tracks.data.map((track) => `${track.id}`),

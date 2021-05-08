@@ -12,9 +12,12 @@ export interface ContributorsType {
   type: string; // 'artist';
 }
 
-export interface ArtistType {
+export interface ArtistTypeMinimal {
   id: string; // '27';
   name: string; // 'Daft Punk';
   md5_image: string;
+}
+
+export interface ArtistType extends ArtistTypeMinimal {
   radio: boolean;
 }
