@@ -13,7 +13,7 @@
     "build": "tsc",
     "ts": "node --no-warnings --loader ts-node/esm",
     "mongo": "npx mongo-gui",
-    "dev": "node --no-warnings --loader ts-node/esm src/server.ts",
+    "dev": "nodemon src/server.ts",
     "pretest": "eslint .",
     "test": "c8 ava"
   },
