@@ -21,16 +21,13 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
     const {name, tracks} = m3u8Reader(file.path);
     const addedTracks: (TrackType | DeezerTrackType)[] = [];
     for (const track of tracks) {
-      const info = await extractMeta({
-        name: basename(track),
-        path: track,
-        type: 'audio',
-      });
-      const addedTrack = await extractAudio(info, {id: 1, readable: 1});
+      const info = await extractMeta({name: basename(track), path: track, type: 'audio'});
+      const addedTrack = await extractAudio(info, {id: 1});
       if (addedTrack) {
         addedTracks.push(addedTrack);
       }
     }
+
     const playlistInfo = await generatePlaylistInfo({
       name,
       description: '',

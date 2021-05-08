@@ -6,12 +6,9 @@ import {addTrackAndAlbum} from '../common/addTrackAndAlbum';
 import {findTrackFromAlbum} from '../common/findTrackFromAlbum';
 import type {ScrapeFilesType, DeezerAlbumType, DeezerTrackType, TrackType} from '../types';
 
-export const extractAudio = async (
-  file: ScrapeFilesType,
-  projection: Record<string, 0 | 1> = {_id: 0, readable: 1},
-) => {
+export const extractAudio = async (file: ScrapeFilesType, projection: Record<string, 0 | 1> = {_id: 0}) => {
   try {
-    const entry = await musicTracks.findOne({track_path: file.path}, {projection});
+    const entry = await musicTracks.findOne({track_path: file.path}, {projection: {...projection, readable: 1}});
     if (entry && entry.readable) {
       return entry as TrackType;
     }
