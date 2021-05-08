@@ -11,9 +11,9 @@
     "postlint": "tsc --noemit",
     "prebuild": "eslint .",
     "build": "tsc",
-    "ts": "node --loader ts-node/esm",
+    "ts": "node --no-warnings --loader ts-node/esm",
     "mongo": "npx mongo-gui",
-    "dev": "node --loader ts-node/esm src/server.ts",
+    "dev": "node --no-warnings --loader ts-node/esm src/server.ts",
     "pretest": "eslint .",
     "test": "c8 ava"
   },
@@ -64,6 +64,7 @@
       "configurableModuleFormat": true
     },
     "nodeArguments": [
+      "--no-warnings",
       "--loader=ts-node/esm"
     ],
     "concurrency": 1,
