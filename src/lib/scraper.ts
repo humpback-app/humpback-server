@@ -22,7 +22,7 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
     const addedTracks: (TrackType | DeezerTrackType)[] = [];
     for (const track of tracks) {
       const info = await extractMeta({name: basename(track), path: track, type: 'audio'});
-      const addedTrack = await extractAudio(info, {id: 1});
+      const addedTrack = await extractAudio(info, {_id: 0, id: 1, duration: 1});
       if (addedTrack) {
         addedTracks.push(addedTrack);
       }
@@ -32,6 +32,7 @@ const extractPlaylist = async (file: ScrapeFilesType) => {
       name,
       description: '',
       path: file.path,
+      duration: addedTracks.reduce((total, at) => total + Number(at.duration), 0),
       tracks: addedTracks.map((t) => `${t.id}`),
     });
     await musicPlaylists.insertOne(playlistInfo);

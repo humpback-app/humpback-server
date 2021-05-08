@@ -105,6 +105,7 @@ interface PlaylistInfoType {
   name: string;
   description: string;
   path: string;
+  duration: number;
   tracks: string[];
   username?: string;
 }
@@ -119,6 +120,7 @@ export const generatePlaylistInfo = async ({
   name,
   description,
   path,
+  duration,
   tracks,
   username,
 }: PlaylistInfoType): Promise<PlaylistType> => {
@@ -142,7 +144,7 @@ export const generatePlaylistInfo = async ({
     id: nanoid(14),
     title: name,
     description,
-    duration: 0,
+    duration,
     public: true,
     collaborative: false,
     nb_tracks: tracks.length,
